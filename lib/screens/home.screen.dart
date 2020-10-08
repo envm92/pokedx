@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedx/services/auth.service.dart';
 import 'package:pokedx/services/data.service.dart';
 import 'package:pokedx/widgets/pokemon.card.dart';
 
@@ -26,11 +27,19 @@ class _HomeState extends State<HomeScreen> {
     Navigator.pushNamed(context, '/details', arguments: pokemon);
   }
 
+  logout(){
+    var authSrv = AuthService();
+    authSrv.logout().then((value) => Navigator.pushReplacementNamed(context, '/login'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pokedx'),
+        actions: [
+          IconButton(icon: Icon(Icons.exit_to_app), onPressed: () => logout())
+        ],
       ),
       body: (_isLoading)?  Center(
         child: CircularProgressIndicator(),

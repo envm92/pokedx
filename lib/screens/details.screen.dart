@@ -84,10 +84,13 @@ class _DetailState extends State<DetailsScreen> {
     _detail['forms'].forEach((v) {
       forms.add(Chip(label: Text(v['name'])));
     });
-    _details.add(Wrap(
-      spacing: 6.0,
-      runSpacing: 6.0,
-      children: forms,
+    _details.add(Padding(
+      padding: const EdgeInsets.all(10),
+      child: Wrap(
+        spacing: 6.0,
+        runSpacing: 6.0,
+        children: forms,
+      ),
     ));
     _details.add(Divider());
     _details.add(ListTile(title: Text('Moves')));
@@ -95,10 +98,13 @@ class _DetailState extends State<DetailsScreen> {
     _detail['moves'].forEach((v) {
       moves.add(Chip(label: Text(v['move']['name'])));
     });
-    _details.add(Wrap(
-      spacing: 6.0,
-      runSpacing: 6.0,
-      children: moves,
+    _details.add(Padding(
+      padding: const EdgeInsets.all(10),
+      child: Wrap(
+        spacing: 6.0,
+        runSpacing: 6.0,
+        children: moves,
+      ),
     ));
     _details.add(Divider());
     _details.add(ListTile(title: Text('Stats')));
@@ -107,10 +113,13 @@ class _DetailState extends State<DetailsScreen> {
       stats.add(Chip(
           label: Text(v['stat']['name'] + ': ' + v['base_stat'].toString())));
     });
-    _details.add(Wrap(
-      spacing: 6.0,
-      runSpacing: 6.0,
-      children: stats,
+    _details.add(Padding(
+      padding: const EdgeInsets.all(10),
+      child: Wrap(
+        spacing: 6.0,
+        runSpacing: 6.0,
+        children: stats,
+      ),
     ));
     _details.add(Divider());
     _details.add(ListTile(title: Text('Type')));
@@ -118,10 +127,13 @@ class _DetailState extends State<DetailsScreen> {
     _detail['types'].forEach((v) {
       type.add(Chip(label: Text(v['type']['name'])));
     });
-    _details.add(Wrap(
-      spacing: 6.0,
-      runSpacing: 6.0,
-      children: type,
+    _details.add(Padding(
+      padding: const EdgeInsets.all(10),
+      child: Wrap(
+        spacing: 6.0,
+        runSpacing: 6.0,
+        children: type,
+      ),
     ));
     setState(() => _isLoading = false);
   }
@@ -131,48 +143,56 @@ class _DetailState extends State<DetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text((_isLoading)
-            ? widget.pokemon['name']
-            : '#' + _detail['id'].toString() + ' ' + _detail['name']),
+            ? widget.pokemon['name'].toUpperCase()
+            : '#' + _detail['id'].toString() + ' ' + _detail['name'].toUpperCase()),
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _sprites.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            CachedNetworkImage(
-                              placeholder: (context, url) {
-                                return Container(
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
+      body: (_isLoading)
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      color: Colors.blueGrey.shade50,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _sprites.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                children: [
+                                  Expanded(
+                                    child: CachedNetworkImage(
+                                      placeholder: (context, url) {
+                                        return Container(
+                                          child: Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      },
+                                      imageUrl: _sprites[index]['url'],
+                                    ),
                                   ),
-                                );
-                              },
-                              imageUrl: _sprites[index]['url'],
-                            ),
-                            Text(_sprites[index]['name'])
-                          ],
-                        );
-                      })),
-              flex: 1,
-            ),
-            Expanded(
-              child: Container(
-                child: ListView(
-                  padding: const EdgeInsets.all(5),
-                  children: _details,
-                ),
+                                  Text(_sprites[index]['name'])
+                                ],
+                              );
+                            })),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: ListView(
+                        padding: const EdgeInsets.all(5),
+                        children: _details,
+                      ),
+                    ),
+                    flex: 2,
+                  ),
+                ],
               ),
-              flex: 2,
             ),
-          ],
-        ),
-      ),
     );
   }
 }

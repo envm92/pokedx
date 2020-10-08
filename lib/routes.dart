@@ -21,7 +21,6 @@ class Routes {
     return FutureBuilder(
         future: authSrv.isLogged(),
         builder: (BuildContext context, AsyncSnapshot<bool> isLogged) {
-          print(isLogged.data);
           if (isLogged.data == true) {
             return HomeScreen();
           } else {

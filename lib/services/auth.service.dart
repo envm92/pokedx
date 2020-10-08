@@ -13,4 +13,10 @@ class AuthService {
       return prefs.setBool('isLogged', true);
     });
   }
+
+  Future<bool> logout() {
+    return SharedPreferences.getInstance().then((prefs) {
+      return prefs.setBool('isLogged', false);
+    });
+  }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pokedx/services/data.service.dart';
+import 'package:pokedx/widgets/pokemon.card.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -7,9 +9,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
 
+  List _pokemons = List();
+  DataService _service = DataService();
+
   @override
   void initState() {
     super.initState();
+    _service.fetchPokemon().then((result) {
+      setState(() {
+        _pokemons = result;
+      });
+    });
+  }
+
+  goToDetail(pokemon) {
+    Navigator.pushNamed(context, '/details', arguments: pokemon);
   }
 
   @override
@@ -18,12 +32,15 @@ class _HomeState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Test'),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Text('Hello world!')
-          ],
-        ),
+      body: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: _pokemons.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () { goToDetail(_pokemons[index]);},
+              child: PokemonCard(_pokemons[index]),
+            );
+          }
       ),
     );
   }

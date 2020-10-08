@@ -1,16 +1,25 @@
-# pokedx
+# Welcome to Eri's Pokedex
 
-Poke dx
+![Image of Sylveon](https://media.giphy.com/media/FiSdfE2aD9ihO/source.gif)
 
-## Getting Started
+This project is a pokedex, encyclopedia of Pokémon.
 
-This project is a starting point for a Flutter application.
+## To test in your device
 
-A few resources to get you started if this is your first Flutter project:
+Install a Flutter app on an attached device. Write the next commands in the terminal in the root of this project
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```
+$ flutter pub get
+$ flutter install
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You have to had attached a device (preference Android) and has set up Flutter environment <https://flutter.dev/docs/get-started/install>
+
+
+## Plugins used
+
+|Name|Use|
+|---|---|
+|http|Make request to PokeApi|
+|cached_network_image|Show sprites|
+|shared_preferences|Store the auth state|

@@ -39,7 +39,7 @@ class _HomeState extends State<HomeScreen> {
           itemCount: _pokemons.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-              onTap: () { goToDetail(_pokemons[index]);},
+              onTap: () => goToDetail(_pokemons[index]),
               child: PokemonCard(_pokemons[index]),
             );
           }

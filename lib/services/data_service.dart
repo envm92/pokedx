@@ -13,7 +13,7 @@ class DataService {
       if (res['results'] != null) {
         return res['results'];
       }
-      return List();
+      return [];
     });
   }
 

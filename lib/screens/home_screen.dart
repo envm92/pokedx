@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pokedx/services/auth.service.dart';
-import 'package:pokedx/services/data.service.dart';
+import 'package:pokedx/services/auth_service.dart';
+import 'package:pokedx/services/data_service.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
-  _HomeState createState() => new _HomeState();
+  _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<HomeScreen> {
-  List _pokemons = List();
-  DataService _service = DataService();
+  List _pokemons = [];
+  final DataService _service = DataService();
   bool _isLoading = true;
 
   @override
@@ -21,11 +21,11 @@ class _HomeState extends State<HomeScreen> {
     });
   }
 
-  goToDetail(pokemon) {
+  void goToDetail(pokemon) {
     Navigator.pushNamed(context, '/details', arguments: pokemon);
   }
 
-  logout() {
+  void logout() {
     var authSrv = AuthService();
     authSrv
         .logout()

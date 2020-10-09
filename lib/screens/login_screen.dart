@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedx/services/auth.service.dart';
+import 'package:pokedx/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,7 +11,7 @@ class _LoginState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormState>();
   final _scaffoldFormKey = GlobalKey<ScaffoldState>();
 
-  login(BuildContext context) {
+  void login(BuildContext context) {
     FocusManager.instance.primaryFocus.unfocus();
     if (_loginFormKey.currentState.validate()) {
       var authSrv = AuthService();

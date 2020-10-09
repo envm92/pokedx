@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pokedx/screens/details.screen.dart';
-import 'package:pokedx/screens/home.screen.dart';
-import 'package:pokedx/screens/login.screen.dart';
-import 'package:pokedx/screens/welcome.screen.dart';
-import 'package:pokedx/services/auth.service.dart';
+import 'package:pokedx/screens/details_screen.dart';
+import 'package:pokedx/screens/home_screen.dart';
+import 'package:pokedx/screens/login_screen.dart';
+import 'package:pokedx/screens/welcome_screen.dart';
+import 'package:pokedx/services/auth_service.dart';
 
 class Routes {
 
-  static get() {
+  static Map get() {
     return <String, WidgetBuilder> {
       '/welcome' : (BuildContext context) => WelcomeScreen(),
       '/login' : (BuildContext context) => LoginScreen(),
@@ -16,7 +16,7 @@ class Routes {
     };
   }
 
-  static getHome() {
+  static FutureBuilder<bool> getHome() {
     var authSrv = AuthService();
     return FutureBuilder(
         future: authSrv.isLogged(),

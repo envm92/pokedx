@@ -1,22 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:pokedx/services/data.service.dart';
+import 'package:pokedx/services/data_service.dart';
 
 class DetailsScreen extends StatefulWidget {
-  Map pokemon;
+  final Map pokemon;
 
   DetailsScreen(this.pokemon);
 
   @override
-  _DetailState createState() => new _DetailState();
+  _DetailState createState() => _DetailState();
 }
 
 class _DetailState extends State<DetailsScreen> {
   bool _isLoading = true;
   Map _detail;
   List _sprites = [];
-  List<Widget> _details = [];
-  DataService _service = DataService();
+  final List<Widget> _details = [];
+  final DataService _service = DataService();
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _DetailState extends State<DetailsScreen> {
     });
   }
 
-  getSprites() {
+  void getSprites() {
     var sprites = _detail['sprites'];
     final filteredMap = Map.from(sprites)
       ..removeWhere((k, v) {
@@ -45,7 +45,7 @@ class _DetailState extends State<DetailsScreen> {
         .toList();
   }
 
-  getDetail() {
+  void getDetail() {
     _details.add(ListTile(
       title: Text('Base Experience'),
       subtitle: Text(_detail['base_experience'].toString()),

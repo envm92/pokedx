@@ -3,7 +3,7 @@ import 'package:pokedx/routes.dart';
 import 'package:pokedx/theme.dart';
 
 void main() {
-  runApp(new PokedxApp());
+  runApp(PokedxApp());
 }
 
 class PokedxApp extends StatelessWidget {

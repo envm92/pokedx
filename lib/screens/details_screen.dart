@@ -21,11 +21,11 @@ class _DetailState extends State<DetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _service.getDetail(widget.pokemon['name']).then((value) {
+    /*_service.getDetail(widget.pokemon['name']).then((value) {
       _detail = value;
       getSprites();
       getDetail();
-    });
+    });*/
   }
 
   void getSprites() {

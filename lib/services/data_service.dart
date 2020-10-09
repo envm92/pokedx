@@ -2,16 +2,15 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:pokedx/models/pokemon.dart';
-import 'package:pokedx/models/resource_list.dart';
+import 'package:pokedx/models/resource.dart';
 
-const LIMIT = '20';
 const URI = 'pokeapi.co';
 
 class DataService {
-  Future<ResourceList> fetchPokemon([int offset = 0]) {
+  Future<ResourceList> fetchPokemons(int offset, { limit = 20 }) {
     return http
         .get(Uri.https(URI, 'api/v2/pokemon/',
-            {'limit': LIMIT, 'offset': offset.toString()}))
+            {'limit': limit.toString(), 'offset': offset.toString()}))
         .then((response) {
       var resourceList = ResourceList.fromMap(json.decode(response.body));
       return resourceList;

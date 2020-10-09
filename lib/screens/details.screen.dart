@@ -17,7 +17,6 @@ class _DetailState extends State<DetailsScreen> {
   List _sprites = [];
   List<Widget> _details = [];
   DataService _service = DataService();
-  int selected = 0;
 
   @override
   void initState() {
@@ -144,7 +143,10 @@ class _DetailState extends State<DetailsScreen> {
       appBar: AppBar(
         title: Text((_isLoading)
             ? widget.pokemon['name'].toUpperCase()
-            : '#' + _detail['id'].toString() + ' ' + _detail['name'].toUpperCase()),
+            : '#' +
+                _detail['id'].toString() +
+                ' ' +
+                _detail['name'].toUpperCase()),
       ),
       body: (_isLoading)
           ? Center(
@@ -155,8 +157,8 @@ class _DetailState extends State<DetailsScreen> {
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      color: Colors.blueGrey.shade50,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        color: Colors.blueGrey.shade50,
                         child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: _sprites.length,

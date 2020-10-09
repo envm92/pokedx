@@ -8,17 +8,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  List _pokemons = [];
+  final List _pokemons = [];
   final DataService _service = DataService();
-  bool _isLoading = true;
+  final bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _service.fetchPokemon().then((result) {
+    /*_service.fetchPokemon().then((ResourceList result) {
       _pokemons = result;
       setState(() => _isLoading = false);
-    });
+    });*/
   }
 
   void goToDetail(pokemon) {

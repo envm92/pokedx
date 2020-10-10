@@ -23,21 +23,21 @@ class Pokemon {
 
   Pokemon.fromMap(Map<String, dynamic> data) {
     id = data['id'];
-    abilities = data['abilities'].map((ability) => Ability.fromMap(ability) ).toList();
+    abilities = data['abilities'].map((ability) => Ability.fromMap(ability)).toList().cast<Ability>();
     base_experience = data['base_experience'];
-    forms = data['forms'].map((form) => Resource.fromMap(form) ).toList();
-    game_indices = data['game_indices'].map((game_index) => GameIndex.fromMap(game_index) ).toList();
+    forms = data['forms'].map((form) => Resource.fromMap(form) ).toList().cast<Resource>();
+    game_indices = data['game_indices'].map((game_index) => GameIndex.fromMap(game_index) ).toList().cast<GameIndex>();
     height = data['height'];
-    held_items = data['held_items'].map((held_item) => HeldItem.fromMap(held_item) ).toList();
+    held_items = data['held_items'].map((held_item) => HeldItem.fromMap(held_item) ).toList().cast<HeldItem>();
     is_default = data['is_default'];
     location_area_encounters = data['location_area_encounters'];
-    moves = data['moves'].map((move) => Move.fromMap(move) ).toList();
+    moves = data['moves'].map((move) => Move.fromMap(move) ).toList().cast<Move>();
     name = data['name'];
     order = data['order'];
     species = Resource.fromMap(data['species']);
     sprites = Sprite.fromMap(data['sprites']);
-    stats = data['stats'].map((stat) => Stat.fromMap(stat) ).toList();
-    types = data['types'].map((type) => Type.fromMap(type) ).toList();
+    stats = data['stats'].map((stat) => Stat.fromMap(stat) ).toList().cast<Stat>();
+    types = data['types'].map((type) => Type.fromMap(type) ).toList().cast<Type>();
     weight = data['weight'];
   }
 }
@@ -67,7 +67,7 @@ class HeldItem {
 
   HeldItem.fromMap(Map<String, dynamic> data) {
     item = Resource.fromMap(data['item']);
-    version_details = data['version_details'].map((version_detail) => VersionDetail.fromMap(version_detail) ).toList();
+    version_details = data['version_details'].map((version_detail) => VersionDetail.fromMap(version_detail) ).toList().cast<VersionDetail>();
   }
 }
 class VersionDetail {
@@ -84,8 +84,8 @@ class Move {
   List<VersionGroupDetail> version_group_details;
 
   Move.fromMap(Map<String, dynamic> data) {
-    move = Resource.fromMap(data['version']);
-    version_group_details = data['version_details'].map((version_group_detail) => VersionGroupDetail.fromMap(version_group_detail) ).toList();
+    move = (data['move'] != null) ? Resource.fromMap(data['move']) : Resource();
+    version_group_details = (data['version'] != null) ? data['version_details'].map((version_group_detail) => VersionGroupDetail.fromMap(version_group_detail) ).toList().cast<VersionGroupDetail>() : [];
   }
 }
 class VersionGroupDetail {
@@ -120,17 +120,57 @@ class Sprite {
     front_female = data['front_female'];
     front_shiny = data['front_shiny'];
     front_shiny_female = data['front_shiny_female'];
-    other = data['other'];
-    versions = data['versions'];
+    other = data['other'].cast<String, Map<String, String>>();
+    versions = data['versions'].cast<String, Map<String, String>>();
+  }
+
+  List<Map<String, String>> getDefault() {
+    if (back_default != null) {
+      return [
+        {'name': 'Front', 'url': front_default},
+        {'name': 'Back', 'url': back_default},
+      ];
+    }
+    return [];
+  }
+
+  List<Map<String, String>> getFemale() {
+    if (back_female != null) {
+      return [
+        {'name': 'Front female', 'url': front_female},
+        {'name': 'Back female', 'url': back_female}
+      ];
+    }
+    return [];
+  }
+
+  List<Map<String, String>> getShiny() {
+    if (back_shiny != null) {
+      return [
+        {'name': 'Front shiny', 'url': front_shiny},
+        {'name': 'Back shiny', 'url': back_shiny}
+      ];
+    }
+    return [];
+  }
+
+  List<Map<String, String>> getShinyFemale() {
+    if (back_shiny_female != null) {
+      return [
+        {'name': 'Front shiny female', 'url': front_shiny_female},
+        {'name': 'Back shiny female', 'url': back_shiny_female}
+      ];
+    }
+    return [];
   }
 }
 class Stat {
-  int base_tat;
+  int base_stat;
   int effort;
   Resource stat;
 
   Stat.fromMap(Map<String, dynamic> data) {
-    base_tat = data['base_tat'];
+    base_stat = data['base_stat'];
     effort = data['effort'];
     stat = Resource.fromMap(data['stat']);
   }

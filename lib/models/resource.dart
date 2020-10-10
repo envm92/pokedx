@@ -1,6 +1,6 @@
 class Resource {
-  String name;
-  String url;
+  String name = '';
+  String url = '';
 
   Resource();
 

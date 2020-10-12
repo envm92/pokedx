@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pokedx/services/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedx/blocs/auth/auth_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,16 +12,26 @@ class _LoginState extends State<LoginScreen> {
   final _loginFormKey = GlobalKey<FormState>();
   final _scaffoldFormKey = GlobalKey<ScaffoldState>();
 
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  AuthBloc _authBloc;
+
   void login(BuildContext context) {
     FocusManager.instance.primaryFocus.unfocus();
     if (_loginFormKey.currentState.validate()) {
-      var authSrv = AuthService();
-      authSrv.login().then((value) => Navigator.pushReplacementNamed(context, '/welcome'));
+      _authBloc.authRepository.signIn(_emailController.text, _passwordController.text);
     } else {
       _scaffoldFormKey.currentState.showSnackBar(SnackBar(
         content: Text('Missing fields'),
       ));
     }
+  }
+
+
+  @override
+  void initState() {
+    _authBloc = BlocProvider.of<AuthBloc>(context);
   }
 
   @override
@@ -38,6 +49,7 @@ class _LoginState extends State<LoginScreen> {
             child: Column(
               children: [
                 TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         hintText: 'UserName'
@@ -51,6 +63,7 @@ class _LoginState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 20),
                 TextFormField(
+                  controller: _passwordController,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       hintText: 'Password'

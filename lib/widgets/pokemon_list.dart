@@ -1,26 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:pokedx/blocs/pokedex_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedx/blocs/pokemons/pokemons_bloc.dart';
+import 'package:pokedx/blocs/pokemons/pokemons_event.dart';
+import 'package:pokedx/blocs/pokemons/pokemons_state.dart';
 import 'package:pokedx/models/resource.dart';
 
-class PokemonList extends StatelessWidget {
+class PokemonsList extends StatelessWidget {
+  final pokemonsBloc;
+
   final ScrollController _scrollController = ScrollController();
+
+  PokemonsList({Key key, this.pokemonsBloc}) : super(key: key);
 
   void goToDetail(BuildContext context, Resource pokemon) {
     Navigator.pushNamed(context, '/details', arguments: pokemon);
   }
 
-  Widget _buildList(AsyncSnapshot<List<Resource>> snapshot) {
+  ListView _buildList(List<Resource> pokemons) {
+    _scrollController.addListener(() {
+      var triggerFetchMoreSize =
+          0.9 * _scrollController.position.maxScrollExtent;
+      if (_scrollController.position.pixels > triggerFetchMoreSize) {
+        pokemonsBloc.add(LoadPokemons());
+      }
+    });
     return ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.all(8),
-        itemCount: snapshot.data.length,
+        itemCount: pokemons.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-              onTap: () => goToDetail(context, snapshot.data[index]),
+              onTap: () => goToDetail(context, pokemons[index]),
               child: Card(
                 child: ListTile(
                   leading: Text((index + 1).toString()),
-                  title: Text(snapshot.data[index].name.toUpperCase()),
+                  title: Text(pokemons[index].name.toUpperCase()),
                 ),
               ));
         });
@@ -28,24 +42,19 @@ class PokemonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bloc.fetchList();
-    _scrollController.addListener(() {
-      var triggerFetchMoreSize =
-          0.9 * _scrollController.position.maxScrollExtent;
-      if (_scrollController.position.pixels > triggerFetchMoreSize) {
-        bloc.fetchList();
-      }
-    });
-    return StreamBuilder(
-        stream: bloc.list,
-        builder:
-            (BuildContext context, AsyncSnapshot<List<Resource>> snapshot) {
-          if (snapshot.hasData) {
-            return _buildList(snapshot);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
+    return BlocBuilder<PokemonsBloc, PokemonsState>(
+        cubit: pokemonsBloc,
+        builder: (BuildContext context, PokemonsState state ){
+          if (state is EmptyPokemonsState) {
+            pokemonsBloc.add(LoadPokemons());
+            return Center(child: CircularProgressIndicator());
           }
-          return Center(child: CircularProgressIndicator());
-        });
+          if (state is FillPokemonsState) {
+              return _buildList(state.pokemons);
+          }
+          return ListTile(title: Text('Error'));
+        }
+    );
   }
+
 }

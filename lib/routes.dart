@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedx/blocs/auth/auth_bloc.dart';
+import 'package:pokedx/blocs/auth/auth_event.dart';
 import 'package:pokedx/screens/details_screen.dart';
 import 'package:pokedx/screens/home_screen.dart';
 import 'package:pokedx/screens/login_screen.dart';
 import 'package:pokedx/screens/welcome_screen.dart';
-import 'package:pokedx/services/auth_service.dart';
 
 class Routes {
 
@@ -16,12 +19,13 @@ class Routes {
     };
   }
 
-  static FutureBuilder<bool> getHome() {
-    var authSrv = AuthService();
-    return FutureBuilder(
-        future: authSrv.isLogged(),
-        builder: (BuildContext context, AsyncSnapshot<bool> isLogged) {
-          if (isLogged.data == true) {
+  static StreamBuilder<User> getHome(BuildContext context) {
+    var authBloc = BlocProvider.of<AuthBloc>(context);
+    return StreamBuilder(
+        stream: authBloc.authRepository.onAuthStateChanges(),
+        builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+          authBloc.add(StateChange(snapshot.data));
+          if(snapshot.hasData){
             return HomeScreen();
           } else {
             return LoginScreen();

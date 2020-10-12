@@ -2,6 +2,8 @@
 
 ![Image of Sylveon](https://media.giphy.com/media/FiSdfE2aD9ihO/source.gif)
 
+You can try me here <https://pokedx-25dec.web.app/>
+
 This project is a pokedex, encyclopedia of Pokémon.
 
 ## To test in your device
@@ -20,7 +22,12 @@ You have to had attached a device (preference Android) and has set up Flutter en
 
 |Name|Use|
 |---|---|
+|bloc|Implement BLoC pattern|
+|flutter_bloc|Implement BLoC pattern|
+|equatable|Implement BLoC pattern|
 |rxdart|Implement BLoC pattern|
 |http|Make request to PokeApi|
 |cached_network_image|Show sprites|
 |shared_preferences|Store the auth state|
+|firebase_core|Implement Auth|
+|firebase_auth|Implement Auth|

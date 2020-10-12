@@ -16,5 +16,19 @@ class AuthenticatedState extends AuthState {
   @override
   List<Object> get props => [user];
 }
+
+class ErrorState extends AuthState {
+  final String message;
+
+  ErrorState(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+class SignUpError extends ErrorState{
+  SignUpError(String message) : super(message);
+}
+class SignUpSuccess extends AuthState {}
+class RequestChangeState extends AuthState {}
 class UnauthenticatedState extends AuthState {}
 class UnknownState extends AuthState {}

@@ -17,4 +17,23 @@ class StateChange extends AuthEvent {
   List<Object> get props => [user];
 }
 
-class SignOutRequested extends AuthEvent{}
+class SignInRequested extends AuthEvent {
+  const SignInRequested(this.email, this.password);
+
+  final String email;
+  final String password;
+
+  @override
+  List<Object> get props => [email, password];
+}
+
+class SignUpRequested extends AuthEvent {
+  const SignUpRequested(this.email, this.password);
+
+  final String email;
+  final String password;
+
+  @override
+  List<Object> get props => [email, password];
+}
+class SignOutRequested extends AuthEvent {}

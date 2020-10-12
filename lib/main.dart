@@ -9,9 +9,12 @@ import 'package:pokedx/routes.dart';
 import 'package:pokedx/theme.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   final pokemonRepository = PokemonsRepository();
   final authRepository = AuthRepository();
-  await Firebase.initializeApp();
+
 
   runApp(MultiBlocProvider(
     providers: [

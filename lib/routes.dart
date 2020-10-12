@@ -5,30 +5,31 @@ import 'package:pokedx/blocs/auth/auth_bloc.dart';
 import 'package:pokedx/blocs/auth/auth_event.dart';
 import 'package:pokedx/screens/details_screen.dart';
 import 'package:pokedx/screens/home_screen.dart';
-import 'package:pokedx/screens/login_screen.dart';
+import 'package:pokedx/screens/sign_in_screen.dart';
+import 'package:pokedx/screens/sign_up_screen.dart';
 import 'package:pokedx/screens/welcome_screen.dart';
 
 class Routes {
 
   static Map get() {
     return <String, WidgetBuilder> {
+      '/sign_in' : (BuildContext context) => SignInScreen(),
+      '/sign_up' : (BuildContext context) => SignUpScreen(),
       '/welcome' : (BuildContext context) => WelcomeScreen(),
-      '/login' : (BuildContext context) => LoginScreen(),
       '/home' : (BuildContext context) => HomeScreen(),
       '/details' : (BuildContext context) => DetailsScreen(ModalRoute.of(context).settings.arguments),
     };
   }
 
   static StreamBuilder<User> getHome(BuildContext context) {
-    var authBloc = BlocProvider.of<AuthBloc>(context);
     return StreamBuilder(
-        stream: authBloc.authRepository.onAuthStateChanges(),
+        stream: BlocProvider.of<AuthBloc>(context).authState,
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          authBloc.add(StateChange(snapshot.data));
+          BlocProvider.of<AuthBloc>(context).add(StateChange(snapshot.data));
           if(snapshot.hasData){
             return HomeScreen();
           } else {
-            return LoginScreen();
+            return SignInScreen();
           }
         }
     );

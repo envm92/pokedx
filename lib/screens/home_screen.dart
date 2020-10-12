@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedx/blocs/auth/auth_bloc.dart';
+import 'package:pokedx/blocs/auth/auth_event.dart';
 import 'package:pokedx/blocs/pokemons/pokemons_bloc.dart';
-import 'package:pokedx/services/auth_service.dart';
 import 'package:pokedx/widgets/pokemon_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,16 +12,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
 
+  AuthBloc _authBloc;
+
   @override
   void initState() {
     super.initState();
+    _authBloc = BlocProvider.of<AuthBloc>(context);
   }
 
   void logout() {
-    var authSrv = AuthService();
-    authSrv
-        .logout()
-        .then((value) => Navigator.pushReplacementNamed(context, '/login'));
+    _authBloc.add(SignOutRequested());
   }
 
   @override

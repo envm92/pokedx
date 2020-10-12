@@ -20,6 +20,7 @@ You have to had attached a device (preference Android) and has set up Flutter en
 
 |Name|Use|
 |---|---|
+|rxdart|Implement BLoC pattern|
 |http|Make request to PokeApi|
 |cached_network_image|Show sprites|
 |shared_preferences|Store the auth state|

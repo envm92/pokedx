@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:pokedx/blocs/pokedex_bloc.dart';
 import 'package:pokedx/models/pokemon.dart';
 import 'package:pokedx/models/resource.dart';
+import 'package:pokedx/providers/data_provider.dart';
 
 class DetailsScreen extends StatelessWidget {
+
+  final dataServices = DataProvider();
+
   final Resource resource;
 
   DetailsScreen(this.resource);
@@ -166,9 +169,8 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bloc.getDetail(resource);
-    return StreamBuilder(
-        stream: bloc.pokemon,
+    return FutureBuilder(
+        future: dataServices.getDetail(resource.name),
         builder:
             (BuildContext context, AsyncSnapshot<Pokemon> snapshot) {
           if (snapshot.hasData) {

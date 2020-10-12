@@ -6,8 +6,8 @@ import 'package:pokedx/models/resource.dart';
 
 const URI = 'pokeapi.co';
 
-class DataService {
-  Future<ResourceList> fetchPokemons(int offset, { limit = 10 }) {
+class DataProvider {
+  Future<ResourceList> fetchPokemons(int offset, { limit = 30 }) {
     return http
         .get(Uri.https(URI, 'api/v2/pokemon/',
             {'limit': limit.toString(), 'offset': offset.toString()}))

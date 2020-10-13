@@ -1,3 +1,4 @@
+import 'package:pokedx/models/pokemon.dart';
 import 'package:pokedx/models/resource.dart';
 import 'package:pokedx/providers/data_provider.dart';
 
@@ -12,5 +13,9 @@ class PokemonsRepository {
       count = pokemons.length;
       return pokemons;
     });
+  }
+
+  Future<Pokemon> getDetail(Resource resource) {
+    return dataServices.getDetail(resource.name);
   }
 }

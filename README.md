@@ -31,3 +31,18 @@ You have to had attached a device (preference Android) and has set up Flutter en
 |shared_preferences|Store the auth state|
 |firebase_core|Implement Auth|
 |firebase_auth|Implement Auth|
+
+
+## Test
+
+###Integration test
+
+```
+$ flutter drive --target=test_driver/app.dart
+```
+
+###Unit test
+
+```
+$ flutter test
+```

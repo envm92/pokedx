@@ -8,15 +8,29 @@ class PokemonsBloc extends Bloc<PokemonEvent,PokemonsState> {
   PokemonsRepository pokemonRepository;
 
   PokemonsBloc({@required this.pokemonRepository})
-      : assert(pokemonRepository != null), super(EmptyPokemonsState());
+      : assert(pokemonRepository != null), super(PokemonInitial());
 
   @override
   Stream<PokemonsState> mapEventToState(PokemonEvent event) async* {
-    if (event is LoadPokemons) {
+
+    if (event is ListRequested) {
+      yield LoadInProgress();
       try {
         final pokemons = await pokemonRepository.fetchPokemons();
-        yield(FillPokemonsState(pokemons, pokemons.length));
-      } catch (error) { print(error); }
+        yield(ListLoadSuccess(pokemons: pokemons));
+      } catch (error) {
+        yield LoadFailure();
+      }
+    }
+
+    if (event is DetailRequested) {
+      yield LoadInDetailProgress();
+      try {
+        final pokemon = await pokemonRepository.getDetail(event.resource);
+        yield(DetailLoadSuccess(pokemon: pokemon));
+      } catch (error) {
+        yield LoadFailure();
+      }
     }
   }
 }

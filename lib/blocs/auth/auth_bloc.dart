@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:pokedx/blocs/auth/auth_event.dart';
 import 'package:pokedx/blocs/auth/auth_repository.dart';
 import 'package:pokedx/blocs/auth/auth_state.dart';
-import 'package:pokedx/models/user.dart' as model;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthRepository authRepository;
@@ -18,7 +17,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is StateChange) {
         if (event.user != null) {
-          yield AuthenticatedState(model.User(event.user.uid, event.user.email));
+          authRepository.setUser(event.user);
+          yield AuthenticatedState(authRepository.getUser());
         } else {
           yield UnauthenticatedState();
         }
@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignInRequested) {
       yield RequestChangeState();
       try {
-        await authRepository.signIn(event.email, event.password);
+        await authRepository.signIn(event.user, event.password);
       } catch (err) {
         yield ErrorState(err.message);
       }
@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignUpRequested) {
       yield RequestChangeState();
       try {
-        await authRepository.signUp(event.email, event.password);
+        await authRepository.signUp(event.user, event.password);
         yield SignUpSuccess();
       } catch (err) {
         yield SignUpError(err.message);

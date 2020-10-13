@@ -6,6 +6,7 @@ import 'package:pokedx/blocs/pokemons/pokemons_state.dart';
 import 'package:pokedx/models/resource.dart';
 
 class PokemonsList extends StatelessWidget {
+
   final pokemonsBloc;
 
   final ScrollController _scrollController = ScrollController();
@@ -13,7 +14,8 @@ class PokemonsList extends StatelessWidget {
   PokemonsList({Key key, this.pokemonsBloc}) : super(key: key);
 
   void goToDetail(BuildContext context, Resource pokemon) {
-    Navigator.pushNamed(context, '/details', arguments: pokemon);
+    pokemonsBloc.add(DetailRequested(resource: pokemon));
+    Navigator.pushNamed(context, '/details');
   }
 
   ListView _buildList(List<Resource> pokemons) {
@@ -21,7 +23,7 @@ class PokemonsList extends StatelessWidget {
       var triggerFetchMoreSize =
           0.9 * _scrollController.position.maxScrollExtent;
       if (_scrollController.position.pixels > triggerFetchMoreSize) {
-        pokemonsBloc.add(LoadPokemons());
+        pokemonsBloc.add(ListRequested());
       }
     });
     return ListView.builder(
@@ -42,17 +44,23 @@ class PokemonsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var _pokemons = <Resource>[];
     return BlocBuilder<PokemonsBloc, PokemonsState>(
         cubit: pokemonsBloc,
-        builder: (BuildContext context, PokemonsState state ){
-          if (state is EmptyPokemonsState) {
-            pokemonsBloc.add(LoadPokemons());
+        builder: (BuildContext context, PokemonsState state){
+          if (state is PokemonInitial) {
+            pokemonsBloc.add(ListRequested());
             return Center(child: CircularProgressIndicator());
           }
-          if (state is FillPokemonsState) {
-              return _buildList(state.pokemons);
+
+          if (state is ListLoadSuccess) {
+            _pokemons = state.pokemons;
           }
-          return ListTile(title: Text('Error'));
+
+          if (state is LoadFailure) {
+            return ListTile(title: Text('Error'));
+          }
+          return _buildList(_pokemons);
         }
     );
   }

@@ -1,16 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedx/blocs/pokemons/pokemons_bloc.dart';
+import 'package:pokedx/blocs/pokemons/pokemons_state.dart';
 import 'package:pokedx/models/pokemon.dart';
-import 'package:pokedx/models/resource.dart';
-import 'package:pokedx/providers/data_provider.dart';
 
 class DetailsScreen extends StatelessWidget {
-
-  final dataServices = DataProvider();
-
-  final Resource resource;
-
-  DetailsScreen(this.resource);
 
   Widget _buildSprites(Pokemon pokemon) {
     var sprites = pokemon.sprites;
@@ -134,8 +129,8 @@ class DetailsScreen extends StatelessWidget {
       ));
       return _details.cast<Widget>();
   }
-  Widget _buildDetail(AsyncSnapshot<Pokemon> snapshot) {
-    var pokemon = snapshot.data;
+
+  Widget _buildDetail(Pokemon pokemon) {
     return Scaffold(
       appBar: AppBar(
         title: Text('# ${pokemon.id} ${pokemon.name.toUpperCase()}'),
@@ -169,16 +164,24 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: dataServices.getDetail(resource.name),
-        builder:
-            (BuildContext context, AsyncSnapshot<Pokemon> snapshot) {
-          if (snapshot.hasData) {
-            return _buildDetail(snapshot);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
+    return BlocBuilder<PokemonsBloc, PokemonsState>(
+      cubit: BlocProvider.of<PokemonsBloc>(context),
+      builder: (BuildContext context, PokemonsState state ){
+        if (state is DetailLoadSuccess) {
+          return _buildDetail(state.pokemon);
+        }
+
+        if (state is LoadFailure) {
+          return ListTile(title: Text('Error'));
+        }
+
+        if (state is LoadInDetailProgress) {
+
           return _buildLoading();
-        });
+        }
+
+        return Container();
+      },
+    );
   }
 }

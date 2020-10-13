@@ -8,6 +8,7 @@ import 'package:pokedx/screens/home_screen.dart';
 import 'package:pokedx/screens/sign_in_screen.dart';
 import 'package:pokedx/screens/sign_up_screen.dart';
 import 'package:pokedx/screens/welcome_screen.dart';
+import 'package:pokedx/models/user.dart' as model;
 
 class Routes {
 
@@ -17,7 +18,7 @@ class Routes {
       '/sign_up' : (BuildContext context) => SignUpScreen(),
       '/welcome' : (BuildContext context) => WelcomeScreen(),
       '/home' : (BuildContext context) => HomeScreen(),
-      '/details' : (BuildContext context) => DetailsScreen(ModalRoute.of(context).settings.arguments),
+      '/details' : (BuildContext context) => DetailsScreen(),
     };
   }
 
@@ -25,7 +26,8 @@ class Routes {
     return StreamBuilder(
         stream: BlocProvider.of<AuthBloc>(context).authState,
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-          BlocProvider.of<AuthBloc>(context).add(StateChange(snapshot.data));
+          var user = (snapshot.hasData) ? model.User(snapshot.data.uid, snapshot.data.email) : null;
+          BlocProvider.of<AuthBloc>(context).add(StateChange(user: user));
           if(snapshot.hasData){
             return HomeScreen();
           } else {

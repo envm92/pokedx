@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedx/blocs/auth/auth_bloc.dart';
 import 'package:pokedx/blocs/auth/auth_event.dart';
 import 'package:pokedx/blocs/auth/auth_state.dart';
+import 'package:pokedx/models/user.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _SignUpState extends State<SignUpScreen> {
   void signUp(BuildContext context) {
     FocusManager.instance.primaryFocus.unfocus();
     if (_signUpFormKey.currentState.validate()) {
-      _authBloc.add(SignUpRequested( _emailController.text,
+      _authBloc.add(SignUpRequested( user: User('', _emailController.text), password:
           _passwordController.text));
     } else {
       _showSnackBar('Missing fields');

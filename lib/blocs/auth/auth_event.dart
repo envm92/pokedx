@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pokedx/models/user.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -9,7 +9,7 @@ abstract class AuthEvent extends Equatable {
 }
 
 class StateChange extends AuthEvent {
-  const StateChange(this.user);
+  const StateChange({this.user});
 
   final User user;
 
@@ -18,22 +18,22 @@ class StateChange extends AuthEvent {
 }
 
 class SignInRequested extends AuthEvent {
-  const SignInRequested(this.email, this.password);
+  const SignInRequested({this.user, this.password});
 
-  final String email;
+  final User user;
   final String password;
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [user, password];
 }
 
 class SignUpRequested extends AuthEvent {
-  const SignUpRequested(this.email, this.password);
+  const SignUpRequested({this.user, this.password});
 
-  final String email;
+  final User user;
   final String password;
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [user, password];
 }
 class SignOutRequested extends AuthEvent {}

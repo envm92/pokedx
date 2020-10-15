@@ -1,12 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedx/blocs/pokemon/pokemon_bloc.dart';
+import 'package:pokedx/blocs/pokemon/pokemon_event.dart';
 import 'package:pokedx/blocs/pokemons/pokemons_bloc.dart';
 import 'package:pokedx/blocs/pokemons/pokemons_event.dart';
 import 'package:pokedx/blocs/pokemons/pokemons_state.dart';
 import 'package:pokedx/models/resource.dart';
 
 class PokemonsList extends StatelessWidget {
-
   final pokemonsBloc;
 
   final ScrollController _scrollController = ScrollController();
@@ -14,7 +16,8 @@ class PokemonsList extends StatelessWidget {
   PokemonsList({Key key, this.pokemonsBloc}) : super(key: key);
 
   void goToDetail(BuildContext context, Resource pokemon) {
-    pokemonsBloc.add(DetailRequested(resource: pokemon));
+    BlocProvider.of<PokemonBloc>(context)
+        .add(DetailRequested(resource: pokemon));
     Navigator.pushNamed(context, '/details');
   }
 
@@ -27,16 +30,44 @@ class PokemonsList extends StatelessWidget {
       }
     });
     return ListView.builder(
+        shrinkWrap: true,
         controller: _scrollController,
         padding: const EdgeInsets.all(8),
         itemCount: pokemons.length,
         itemBuilder: (BuildContext context, int index) {
+          var id = pokemons[index].getId();
           return GestureDetector(
               onTap: () => goToDetail(context, pokemons[index]),
               child: Card(
-                child: ListTile(
-                  leading: Text((index + 1).toString()),
-                  title: Text(pokemons[index].name.toUpperCase()),
+                child: Container(
+                  width: double.infinity,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: CachedNetworkImage(
+                        fit: BoxFit.fitHeight,
+                        placeholder: (context, url) {
+                          return Container(
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                        imageUrl:
+                            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png',
+                      )),
+                      Expanded(
+                          flex: 3,
+                          child: ListTile(
+                            leading: Text('#${id}'),
+                            title: Text(pokemons[index].name.toUpperCase()),
+                          ))
+                    ],
+                  ),
                 ),
               ));
         });
@@ -47,8 +78,8 @@ class PokemonsList extends StatelessWidget {
     var _pokemons = <Resource>[];
     return BlocBuilder<PokemonsBloc, PokemonsState>(
         cubit: pokemonsBloc,
-        builder: (BuildContext context, PokemonsState state){
-          if (state is PokemonInitial) {
+        builder: (BuildContext context, PokemonsState state) {
+          if (state is PokemonsInitial) {
             pokemonsBloc.add(ListRequested());
             return Center(child: CircularProgressIndicator());
           }
@@ -60,9 +91,7 @@ class PokemonsList extends StatelessWidget {
           if (state is LoadFailure) {
             return ListTile(title: Text('Error'));
           }
-          return _buildList(_pokemons);
-        }
-    );
+          return Container(child: _buildList(_pokemons));
+        });
   }
-
 }

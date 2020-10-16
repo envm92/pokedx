@@ -1,15 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedx/blocs/pokemons/pokemons_bloc.dart';
-import 'package:pokedx/blocs/pokemons/pokemons_state.dart';
+import 'package:pokedx/blocs/pokemon/pokemon_bloc.dart';
+import 'package:pokedx/blocs/pokemon/pokemon_state.dart';
 import 'package:pokedx/models/pokemon.dart';
 
 class DetailsScreen extends StatelessWidget {
 
   Widget _buildSprites(Pokemon pokemon) {
     var sprites = pokemon.sprites;
-    var spriteList = [...sprites.getDefault(), ...sprites.getFemale(), ...sprites.getShiny(), ...sprites.getShinyFemale()];
+    var spriteList = [
+      ...sprites.getOther(),
+      ...sprites.getDefault(),
+      ...sprites.getFemale(),
+      ...sprites.getShiny(),
+      ...sprites.getShinyFemale()
+    ];
+    sprites.getVersion().forEach((key, value) {
+      value.forEach((k,v) {
+        spriteList = [...spriteList, ...v['sprint']];
+      });
+    });
     return Container(
         padding: const EdgeInsets.only(bottom: 10),
         color: Colors.blueGrey.shade50,
@@ -37,38 +48,83 @@ class DetailsScreen extends StatelessWidget {
             }));
   }
 
+  DataTable _buildGeneralDataTable(Pokemon pokemon) {
+    return DataTable(
+        columns: const <DataColumn>[
+          DataColumn( label: Text('Name',),),
+          DataColumn( label: Text('Value',),),
+        ],
+        rows: <DataRow>[
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Base Experience')),
+              DataCell(Text('${pokemon.base_experience}')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Height')),
+              DataCell(Text('${pokemon.height}')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Order')),
+              DataCell(Text('${pokemon.order}')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Weight')),
+              DataCell(Text('${pokemon.weight}')),
+            ],
+          ),
+          DataRow(
+            cells: <DataCell>[
+              DataCell(Text('Species')),
+              DataCell(Text('${pokemon.species.name.toUpperCase()}')),
+            ],
+          ),
+        ]
+    );
+  }
+
+  DataTable _buildStatsDataTable(Pokemon pokemon) {
+    return DataTable(
+        columns: const <DataColumn>[
+          DataColumn( label: Text('Name',),),
+          DataColumn( label: Text('Base',),),
+          DataColumn( label: Text('Effort',),),
+        ],
+        rows: pokemon.stats.map((value) {
+          return DataRow(
+            cells: <DataCell>[
+              DataCell(Text(value.stat.name.toUpperCase())),
+              DataCell(Text('${value.base_stat}')),
+              DataCell(Text('${value.effort}')),
+            ],
+          );
+        }).toList()
+    );
+  }
+
   List<Widget> _buildList(Pokemon pokemon) {
       var _details = [];
-      _details.add(ListTile(
-        title: Text('Base Experience'),
-        subtitle: Text('${pokemon.base_experience}'),
-      ));
-      _details.add(ListTile(
-        title: Text('Height'),
-        subtitle: Text('${pokemon.height}'),
-      ));
-      _details.add(ListTile(
-        title: Text('Order'),
-        subtitle: Text('${pokemon.order}'),
-      ));
-      _details.add(ListTile(
-        title: Text('Weight'),
-        subtitle: Text('${pokemon.weight}'),
-      ));
-      _details.add(ListTile(
-        title: Text('Species'),
-        subtitle: Text('${pokemon.species.name}'),
-      ));
+      _details.add(ListTile(title: Text('General info')));
+      _details.add(_buildGeneralDataTable(pokemon));
       _details.add(Divider());
       _details.add(ListTile(title: Text('Abilities')));
       var abilities = <Widget>[];
       pokemon.abilities.forEach((v) {
         abilities.add(Chip(label: Text(v.ability.name)));
       });
-      _details.add(Wrap(
-        spacing: 6.0,
-        runSpacing: 6.0,
-        children: abilities,
+      _details.add(Padding(
+        padding: const EdgeInsets.all(10),
+        child: Wrap(
+          spacing: 6.0,
+          runSpacing: 6.0,
+          children: abilities,
+        ),
       ));
       _details.add(Divider());
       _details.add(ListTile(title: Text('Forms')));
@@ -100,19 +156,7 @@ class DetailsScreen extends StatelessWidget {
       ));
       _details.add(Divider());
       _details.add(ListTile(title: Text('Stats')));
-      var stats = <Widget>[];
-      pokemon.stats.forEach((v) {
-        stats.add(Chip(
-            label: Text('${v.stat.name} B: ${v.base_stat} E: ${v.effort}')));
-      });
-      _details.add(Padding(
-        padding: const EdgeInsets.all(10),
-        child: Wrap(
-          spacing: 6.0,
-          runSpacing: 6.0,
-          children: stats,
-        ),
-      ));
+      _details.add(_buildStatsDataTable(pokemon));
       _details.add(Divider());
       _details.add(ListTile(title: Text('Type')));
       var type = <Widget>[];
@@ -164,18 +208,20 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PokemonsBloc, PokemonsState>(
-      cubit: BlocProvider.of<PokemonsBloc>(context),
-      builder: (BuildContext context, PokemonsState state ){
-        if (state is DetailLoadSuccess) {
+    return BlocBuilder<PokemonBloc, PokemonState>(
+      cubit: BlocProvider.of<PokemonBloc>(context),
+      builder: (BuildContext context, PokemonState state ){
+        if (state is LoadSuccess) {
           return _buildDetail(state.pokemon);
         }
 
         if (state is LoadFailure) {
-          return ListTile(title: Text('Error'));
+          return Scaffold(
+            body: Center(child: Text('Error')),
+          );
         }
 
-        if (state is LoadInDetailProgress) {
+        if (state is LoadInProgress) {
 
           return _buildLoading();
         }

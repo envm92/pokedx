@@ -8,6 +8,11 @@ class Resource {
     name = data['name'];
     url = data['url'];
   }
+
+  String getId() {
+    var id = url.split('/');
+    return id[id.length - 2].toString();
+  }
 }
 
 class ResourceList {

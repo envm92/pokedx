@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedx/blocs/auth/auth_bloc.dart';
 import 'package:pokedx/blocs/auth/auth_repository.dart';
+import 'package:pokedx/blocs/pokemon/pokemon_bloc.dart';
 import 'package:pokedx/blocs/pokemons/pokemons_bloc.dart';
 import 'package:pokedx/blocs/pokemons/pokemons_repository.dart';
 import 'package:pokedx/routes.dart';
@@ -21,6 +22,10 @@ void main() async {
       BlocProvider<PokemonsBloc>(
         create: (BuildContext context) =>
             PokemonsBloc(pokemonRepository: pokemonRepository),
+      ),
+      BlocProvider<PokemonBloc>(
+        create: (BuildContext context) =>
+            PokemonBloc(pokemonRepository: pokemonRepository),
       ),
       BlocProvider<AuthBloc>(
         create: (BuildContext context) =>

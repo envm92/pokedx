@@ -108,8 +108,8 @@ class Sprite {
   String front_female;
   String front_shiny;
   String front_shiny_female;
-  Map<String, Map<String, String>> other;
-  Map<String, Map<String, String>> versions;
+  Map<String, dynamic> other;
+  Map<String, dynamic> versions;
 
   Sprite.fromMap(Map<String, dynamic> data) {
     back_default = data['back_default'];
@@ -120,8 +120,159 @@ class Sprite {
     front_female = data['front_female'];
     front_shiny = data['front_shiny'];
     front_shiny_female = data['front_shiny_female'];
-    other = data['other'].cast<String, Map<String, String>>();
-    versions = data['versions'].cast<String, Map<String, String>>();
+    other = _otherFromMap(data);
+    versions = _versionFromMap(data);
+  }
+
+  Map<String, dynamic> _otherFromMap (data) {
+    return {
+      'official_artwork' : {
+        'front_default' : data['other']['official-artwork']['front_default']
+      }
+    };
+  }
+
+  Map<String, dynamic> _versionFromMap (data) {
+    return {
+      'generation-i' : {
+        'red-blue' : {
+          'back_default': data['versions']['generation-i']['red-blue']['back_default'],
+          'back_gray': data['versions']['generation-i']['red-blue']['back_gray'],
+          'front_default': data['versions']['generation-i']['red-blue']['front_default'],
+          'front_gray': data['versions']['generation-i']['red-blue']['front_gray']
+        },
+        'yellow' : {
+          'back_default': data['versions']['generation-i']['yellow']['back_default'],
+          'back_gray': data['versions']['generation-i']['yellow']['back_gray'],
+          'front_default': data['versions']['generation-i']['yellow']['front_default'],
+          'front_gray': data['versions']['generation-i']['yellow']['front_gray']
+        },
+      },
+      'generation-ii' : {
+        'crystal': {
+          'back_default': data['versions']['generation-ii']['crystal']['back_default'],
+          'back_shiny': data['versions']['generation-ii']['crystal']['back_shiny'],
+          'front_default': data['versions']['generation-ii']['crystal']['front_default'],
+          'front_shiny': data['versions']['generation-ii']['crystal']['front_shiny']
+        },
+        'gold': {
+          'back_default': data['versions']['generation-ii']['gold']['back_default'],
+          'back_shiny': data['versions']['generation-ii']['gold']['back_shiny'],
+          'front_default': data['versions']['generation-ii']['gold']['front_default'],
+          'front_shiny': data['versions']['generation-ii']['gold']['front_shiny']
+        },
+        'silver': {
+          'back_default': data['versions']['generation-ii']['silver']['back_default'],
+          'back_shiny': data['versions']['generation-ii']['silver']['back_shiny'],
+          'front_default': data['versions']['generation-ii']['silver']['front_default'],
+          'front_shiny': data['versions']['generation-ii']['silver']['front_shiny']
+        }
+      },
+      'generation-iii' : {
+        'emerald': {
+          'front_default': data['versions']['generation-iii']['emerald']['front_default'],
+          'front_shiny': data['versions']['generation-iii']['emerald']['front_shiny']
+        },
+        'firered-leafgreen': {
+          'back_default': data['versions']['generation-iii']['firered-leafgreen']['back_default'],
+          'back_shiny': data['versions']['generation-iii']['firered-leafgreen']['back_shiny'],
+          'front_default': data['versions']['generation-iii']['firered-leafgreen']['front_default'],
+          'front_shiny': data['versions']['generation-iii']['firered-leafgreen']['front_shiny']
+        },
+        'ruby-sapphire': {
+          'back_default': data['versions']['generation-iii']['ruby-sapphire']['back_default'],
+          'back_shiny': data['versions']['generation-iii']['ruby-sapphire']['back_shiny'],
+          'front_default': data['versions']['generation-iii']['ruby-sapphire']['front_default'],
+          'front_shiny': data['versions']['generation-iii']['ruby-sapphire']['front_shiny']
+        }
+      },
+      'generation-iv' : {
+        'diamond-pearl': {
+          'back_default': data['versions']['generation-iv']['diamond-pearl']['back_default'],
+          'back_female': data['versions']['generation-iv']['diamond-pearl']['back_female'],
+          'back_shiny': data['versions']['generation-iv']['diamond-pearl']['back_shiny'],
+          'back_shiny_female': data['versions']['generation-iv']['diamond-pearl']['back_shiny_female'],
+          'front_default': data['versions']['generation-iv']['diamond-pearl']['front_default'],
+          'front_female': data['versions']['generation-iv']['diamond-pearl']['front_female'],
+          'front_shiny': data['versions']['generation-iv']['diamond-pearl']['front_shiny'],
+          'front_shiny_female': data['versions']['generation-iv']['diamond-pearl']['front_shiny_female']
+        },
+        'heartgold-soulsilver': {
+          'back_default': data['versions']['generation-iv']['heartgold-soulsilver']['back_default'],
+          'back_female': data['versions']['generation-iv']['heartgold-soulsilver']['back_female'],
+          'back_shiny': data['versions']['generation-iv']['heartgold-soulsilver']['back_shiny'],
+          'back_shiny_female': data['versions']['generation-iv']['heartgold-soulsilver']['back_shiny_female'],
+          'front_default': data['versions']['generation-iv']['heartgold-soulsilver']['front_default'],
+          'front_female': data['versions']['generation-iv']['heartgold-soulsilver']['front_female'],
+          'front_shiny': data['versions']['generation-iv']['heartgold-soulsilver']['front_shiny'],
+          'front_shiny_female': data['versions']['generation-iv']['heartgold-soulsilver']['front_shiny_female']
+        },
+        'platinum': {
+          'back_default': data['versions']['generation-iv']['platinum']['back_default'],
+          'back_female': data['versions']['generation-iv']['platinum']['back_female'],
+          'back_shiny': data['versions']['generation-iv']['platinum']['back_shiny'],
+          'back_shiny_female': data['versions']['generation-iv']['platinum']['back_shiny_female'],
+          'front_default': data['versions']['generation-iv']['platinum']['front_default'],
+          'front_female': data['versions']['generation-iv']['platinum']['front_female'],
+          'front_shiny': data['versions']['generation-iv']['platinum']['front_shiny'],
+          'front_shiny_female': data['versions']['generation-iv']['platinum']['front_shiny_female']
+        }
+      },
+      'generation-v' : {
+        'black-white': {
+          'animated': {
+            'back_default': data['versions']['generation-v']['black-white']['animated']['back_default'],
+            'back_female': data['versions']['generation-v']['black-white']['animated']['back_female'],
+            'back_shiny': data['versions']['generation-v']['black-white']['animated']['back_shiny'],
+            'back_shiny_female': data['versions']['generation-v']['black-white']['animated']['back_shiny_female'],
+            'front_default': data['versions']['generation-v']['black-white']['animated']['front_default'],
+            'front_female': data['versions']['generation-v']['black-white']['animated']['front_female'],
+            'front_shiny': data['versions']['generation-v']['black-white']['animated']['front_shiny'],
+            'front_shiny_female': data['versions']['generation-v']['black-white']['animated']['front_shiny_female']
+          },
+          'back_default': data['versions']['generation-v']['black-white']['back_default'],
+          'back_female': data['versions']['generation-v']['black-white']['back_female'],
+          'back_shiny': data['versions']['generation-v']['black-white']['back_shiny'],
+          'back_shiny_female': data['versions']['generation-v']['black-white']['back_shiny_female'],
+          'front_default': data['versions']['generation-v']['black-white']['front_default'],
+          'front_female': data['versions']['generation-v']['black-white']['front_female'],
+          'front_shiny': data['versions']['generation-v']['black-white']['front_shiny'],
+          'front_shiny_female': data['versions']['generation-v']['black-white']['front_shiny_female']
+        }
+      },
+      'generation-vi' : {
+        'omegaruby-alphasapphire': {
+          'front_default': data['versions']['generation-vi']['omegaruby-alphasapphire']['front_default'],
+          'front_female': data['versions']['generation-vi']['omegaruby-alphasapphire']['front_female'],
+          'front_shiny': data['versions']['generation-vi']['omegaruby-alphasapphire']['front_shiny'],
+          'front_shiny_female': data['versions']['generation-vi']['omegaruby-alphasapphire']['front_shiny_female']
+        },
+        'x-y': {
+          'front_default': data['versions']['generation-vi']['x-y']['front_default'],
+          'front_female': data['versions']['generation-vi']['x-y']['front_female'],
+          'front_shiny': data['versions']['generation-vi']['x-y']['front_shiny'],
+          'front_shiny_female': data['versions']['generation-vi']['x-y']['front_shiny_female']
+        }
+      },
+      'generation-vii' : {
+        'icons': {
+          'front_default': data['versions']['generation-vii']['icons']['front_default'],
+          'front_female': data['versions']['generation-vii']['icons']['front_female']
+        },
+        'ultra-sun-ultra-moon': {
+          'front_default': data['versions']['generation-vii']['ultra-sun-ultra-moon']['front_default'],
+          'front_female': data['versions']['generation-vii']['ultra-sun-ultra-moon']['front_female'],
+          'front_shiny': data['versions']['generation-vii']['ultra-sun-ultra-moon']['front_shiny'],
+          'front_shiny_female': data['versions']['generation-vii']['ultra-sun-ultra-moon']['front_shiny_female']
+        }
+      },
+      'generation-viii' : {
+        'icons': {
+          'front_default': data['versions']['generation-viii']['icons']['front_default'],
+          'front_female': data['versions']['generation-viii']['icons']['front_female']
+        }
+      },
+    };
   }
 
   List<Map<String, String>> getDefault() {
@@ -162,6 +313,471 @@ class Sprite {
       ];
     }
     return [];
+  }
+
+  List<Map<String, String>> getOther() {
+    if (other['official_artwork']['front_default'] != null) {
+      return [{'name': '', 'url': other['official_artwork']['front_default']}];
+    }
+    return [];
+  }
+
+  Map<String, dynamic> getVersion() {
+    var sprintsVersions = {};
+    var list = <Map<String,String>>[];
+    var currVersion = {};
+    if (versions['generation-i']['red-blue']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-i']['red-blue']['front_default']});
+    }
+    if (versions['generation-i']['red-blue']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-i']['red-blue']['back_default']});
+    }
+    if (versions['generation-i']['red-blue']['front_gray'] != null) {
+      list.add({'name': 'Front Gray', 'url': versions['generation-i']['red-blue']['front_gray']});
+    }
+    if (versions['generation-i']['red-blue']['back_gray'] != null) {
+      list.add({'name': 'Back Gray', 'url': versions['generation-i']['red-blue']['back_gray']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['red-blue'] = {
+        'name' : 'Red Blue',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-i']['yellow']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-i']['yellow']['front_default']});
+    }
+    if (versions['generation-i']['yellow']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-i']['yellow']['back_default']});
+    }
+    if (versions['generation-i']['yellow']['front_gray'] != null) {
+      list.add({'name': 'Front Gray', 'url': versions['generation-i']['yellow']['front_gray']});
+    }
+    if (versions['generation-i']['yellow']['back_gray'] != null) {
+      list.add({'name': 'Gray', 'url': versions['generation-i']['yellow']['back_gray']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['yellow'] = {
+        'name' : 'Yellow',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-i'] = {...currVersion};
+      currVersion = {};
+    }
+
+    if (versions['generation-ii']['crystal']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-ii']['crystal']['front_default']});
+    }
+    if (versions['generation-ii']['crystal']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-ii']['crystal']['back_default']});
+    }
+    if (versions['generation-ii']['crystal']['front_gray'] != null) {
+      list.add({'name': 'Front Gray ', 'url': versions['generation-ii']['crystal']['front_gray']});
+    }
+    if (versions['generation-ii']['crystal']['back_gray'] != null) {
+      list.add({'name': 'Back Gray ', 'url': versions['generation-ii']['crystal']['back_gray']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['crystal'] = {
+        'name' : 'Crystal',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-ii']['gold']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-ii']['gold']['front_default']});
+    }
+    if (versions['generation-ii']['gold']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-ii']['gold']['back_default']});
+    }
+    if (versions['generation-ii']['gold']['front_gray'] != null) {
+      list.add({'name': 'Front Gray ', 'url': versions['generation-ii']['gold']['front_gray']});
+    }
+    if (versions['generation-ii']['gold']['back_gray'] != null) {
+      list.add({'name': 'Back Gray ', 'url': versions['generation-ii']['gold']['back_gray']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['gold'] = {
+        'name' : 'Gold',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-ii']['silver']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-ii']['silver']['front_default']});
+    }
+    if (versions['generation-ii']['silver']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-ii']['silver']['back_default']});
+    }
+    if (versions['generation-ii']['silver']['front_gray'] != null) {
+      list.add({'name': 'Front Gray ', 'url': versions['generation-ii']['silver']['front_gray']});
+    }
+    if (versions['generation-ii']['silver']['back_gray'] != null) {
+      list.add({'name': 'Back Gray ', 'url': versions['generation-ii']['silver']['back_gray']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['silver'] = {
+        'name' : 'Silver',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-ii'] = {...currVersion};
+      currVersion = {};
+    }
+
+    if (versions['generation-iii']['emerald']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-iii']['emerald']['front_default']});
+    }
+    if (versions['generation-iii']['emerald']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-iii']['emerald']['front_shiny']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['emerald'] = {
+        'name' : 'Emerald',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-iii']['firered-leafgreen']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-iii']['firered-leafgreen']['front_default']});
+    }
+    if (versions['generation-iii']['firered-leafgreen']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-iii']['firered-leafgreen']['back_default']});
+    }
+    if (versions['generation-iii']['firered-leafgreen']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-iii']['firered-leafgreen']['front_shiny']});
+    }
+    if (versions['generation-iii']['firered-leafgreen']['back_shiny'] != null) {
+      list.add({'name': 'Back shiny', 'url': versions['generation-iii']['firered-leafgreen']['back_shiny']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['firered-leafgreen'] = {
+        'name' : 'Firered Leafgreen',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-iii']['ruby-sapphire']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-iii']['ruby-sapphire']['front_default']});
+    }
+    if (versions['generation-iii']['ruby-sapphire']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-iii']['ruby-sapphire']['back_default']});
+    }
+    if (versions['generation-iii']['ruby-sapphire']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-iii']['ruby-sapphire']['front_shiny']});
+    }
+    if (versions['generation-iii']['ruby-sapphire']['back_shiny'] != null) {
+      list.add({'name': 'Back shiny', 'url': versions['generation-iii']['ruby-sapphire']['back_shiny']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['ruby-sapphire'] = {
+        'name' : 'Ruby Sapphire',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-iii'] = {...currVersion};
+      currVersion = {};
+    }
+
+    if (versions['generation-iv']['diamond-pearl']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-iv']['diamond-pearl']['front_default']});
+    }
+    if (versions['generation-iv']['diamond-pearl']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-iv']['diamond-pearl']['back_default']});
+    }
+    if (versions['generation-iv']['diamond-pearl']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-iv']['diamond-pearl']['front_female']});
+    }
+    if (versions['generation-iv']['diamond-pearl']['back_female'] != null) {
+      list.add({'name': 'Back female', 'url': versions['generation-iv']['diamond-pearl']['back_female']});
+    }
+    if (versions['generation-iv']['diamond-pearl']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-iv']['diamond-pearl']['front_shiny']});
+    }
+    if (versions['generation-iv']['diamond-pearl']['back_shiny'] != null) {
+      list.add({'name': 'Back shiny', 'url': versions['generation-iv']['diamond-pearl']['back_shiny']});
+    }
+    if (versions['generation-iv']['diamond-pearl']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-iv']['diamond-pearl']['front_shiny_female']});
+    }
+    if (versions['generation-iv']['diamond-pearl']['back_shiny_female'] != null) {
+      list.add({'name': 'Back shiny female', 'url': versions['generation-iv']['diamond-pearl']['back_shiny_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['diamond-pearl'] = {
+        'name' : 'Diamond Pearl',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-iv']['heartgold-soulsilver']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-iv']['heartgold-soulsilver']['front_default']});
+    }
+    if (versions['generation-iv']['heartgold-soulsilver']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-iv']['heartgold-soulsilver']['back_default']});
+    }
+    if (versions['generation-iv']['heartgold-soulsilver']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-iv']['heartgold-soulsilver']['front_female']});
+    }
+    if (versions['generation-iv']['heartgold-soulsilver']['back_female'] != null) {
+      list.add({'name': 'Back female', 'url': versions['generation-iv']['heartgold-soulsilver']['back_female']});
+    }
+    if (versions['generation-iv']['heartgold-soulsilver']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-iv']['heartgold-soulsilver']['front_shiny']});
+    }
+    if (versions['generation-iv']['heartgold-soulsilver']['back_shiny'] != null) {
+      list.add({'name': 'Back shiny', 'url': versions['generation-iv']['heartgold-soulsilver']['back_shiny']});
+    }
+    if (versions['generation-iv']['heartgold-soulsilver']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-iv']['heartgold-soulsilver']['front_shiny_female']});
+    }
+    if (versions['generation-iv']['heartgold-soulsilver']['back_shiny_female'] != null) {
+      list.add({'name': 'Back shiny female', 'url': versions['generation-iv']['heartgold-soulsilver']['back_shiny_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['heartgold-soulsilver'] = {
+        'name' : 'Heartgold Soulsilver',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-iv']['platinum']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-iv']['platinum']['front_default']});
+    }
+    if (versions['generation-iv']['platinum']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-iv']['platinum']['back_default']});
+    }
+    if (versions['generation-iv']['platinum']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-iv']['platinum']['front_female']});
+    }
+    if (versions['generation-iv']['platinum']['back_female'] != null) {
+      list.add({'name': 'Back female', 'url': versions['generation-iv']['platinum']['back_female']});
+    }
+    if (versions['generation-iv']['platinum']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-iv']['platinum']['front_shiny']});
+    }
+    if (versions['generation-iv']['platinum']['back_shiny'] != null) {
+      list.add({'name': 'Back shiny', 'url': versions['generation-iv']['platinum']['back_shiny']});
+    }
+    if (versions['generation-iv']['platinum']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-iv']['platinum']['front_shiny_female']});
+    }
+    if (versions['generation-iv']['platinum']['back_shiny_female'] != null) {
+      list.add({'name': 'Back shiny female', 'url': versions['generation-iv']['platinum']['back_shiny_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['platinum'] = {
+        'name' : 'Platinum',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-iv'] = {...currVersion};
+      currVersion = {};
+    }
+
+    if (versions['generation-v']['black-white']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-v']['black-white']['front_default']});
+    }
+    if (versions['generation-v']['black-white']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-v']['black-white']['back_default']});
+    }
+    if (versions['generation-v']['black-white']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-v']['black-white']['front_female']});
+    }
+    if (versions['generation-v']['black-white']['back_female'] != null) {
+      list.add({'name': 'Back female', 'url': versions['generation-v']['black-white']['back_female']});
+    }
+    if (versions['generation-v']['black-white']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-v']['black-white']['front_shiny']});
+    }
+    if (versions['generation-v']['black-white']['back_shiny'] != null) {
+      list.add({'name': 'Back shiny', 'url': versions['generation-v']['black-white']['back_shiny']});
+    }
+    if (versions['generation-v']['black-white']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-v']['black-white']['front_shiny_female']});
+    }
+    if (versions['generation-v']['black-white']['back_shiny_female'] != null) {
+      list.add({'name': 'Back shiny female', 'url': versions['generation-v']['black-white']['back_shiny_female']});
+    }
+
+    if (versions['generation-v']['black-white']['animated']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-v']['black-white']['animated']['front_default']});
+    }
+    if (versions['generation-v']['black-white']['animated']['back_default'] != null) {
+      list.add({'name': 'Back', 'url': versions['generation-v']['black-white']['animated']['back_default']});
+    }
+    if (versions['generation-v']['black-white']['animated']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-v']['black-white']['animated']['front_female']});
+    }
+    if (versions['generation-v']['black-white']['animated']['back_female'] != null) {
+      list.add({'name': 'Back female', 'url': versions['generation-v']['black-white']['animated']['back_female']});
+    }
+    if (versions['generation-v']['black-white']['animated']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-v']['black-white']['animated']['front_shiny']});
+    }
+    if (versions['generation-v']['black-white']['animated']['back_shiny'] != null) {
+      list.add({'name': 'Back shiny', 'url': versions['generation-v']['black-white']['animated']['back_shiny']});
+    }
+    if (versions['generation-v']['black-white']['animated']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-v']['black-white']['animated']['front_shiny_female']});
+    }
+    if (versions['generation-v']['black-white']['animated']['back_shiny_female'] != null) {
+      list.add({'name': 'Back shiny female', 'url': versions['generation-v']['black-white']['animated']['back_shiny_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['black-white'] = {
+        'name' : 'Black White',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-v'] = {...currVersion};
+      currVersion = {};
+    }
+
+    if (versions['generation-vi']['omegaruby-alphasapphire']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-vi']['omegaruby-alphasapphire']['front_default']});
+    }
+    if (versions['generation-vi']['omegaruby-alphasapphire']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-vi']['omegaruby-alphasapphire']['front_female']});
+    }
+    if (versions['generation-vi']['omegaruby-alphasapphire']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-vi']['omegaruby-alphasapphire']['front_shiny']});
+    }
+    if (versions['generation-vi']['omegaruby-alphasapphire']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-vi']['omegaruby-alphasapphire']['front_shiny_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['omegaruby-alphasapphire'] = {
+        'name' : 'Omegaruby-alphasapphire',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-vi']['x-y']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-vi']['x-y']['front_default']});
+    }
+    if (versions['generation-vi']['x-y']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-vi']['x-y']['front_female']});
+    }
+    if (versions['generation-vi']['x-y']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-vi']['x-y']['front_shiny']});
+    }
+    if (versions['generation-vi']['x-y']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-vi']['x-y']['front_shiny_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['x-y'] = {
+        'name' : 'X Y',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-vi'] = {...currVersion};
+      currVersion = {};
+    }
+
+    if (versions['generation-vii']['icons']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-vii']['icons']['front_default']});
+    }
+    if (versions['generation-vii']['icons']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-vii']['icons']['front_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['icons'] = {
+        'name' : 'Icons',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if (versions['generation-vii']['ultra-sun-ultra-moon']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-vii']['ultra-sun-ultra-moon']['front_default']});
+    }
+    if (versions['generation-vii']['ultra-sun-ultra-moon']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-vii']['ultra-sun-ultra-moon']['front_female']});
+    }
+    if (versions['generation-vii']['ultra-sun-ultra-moon']['front_shiny'] != null) {
+      list.add({'name': 'Front shiny', 'url': versions['generation-vii']['ultra-sun-ultra-moon']['front_shiny']});
+    }
+    if (versions['generation-vii']['ultra-sun-ultra-moon']['front_shiny_female'] != null) {
+      list.add({'name': 'Front shiny female', 'url': versions['generation-vii']['ultra-sun-ultra-moon']['front_shiny_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['ultra-sun-ultra-moon'] = {
+        'name' : 'Ultra Sun Ultra Moon',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-vii'] = {...currVersion};
+      currVersion = {};
+    }
+
+    if (versions['generation-viii']['icons']['front_default'] != null) {
+      list.add({'name': 'Front', 'url': versions['generation-viii']['icons']['front_default']});
+    }
+    if (versions['generation-viii']['icons']['front_female'] != null) {
+      list.add({'name': 'Front female', 'url': versions['generation-viii']['icons']['front_female']});
+    }
+
+    if (list.isNotEmpty) {
+      currVersion['icons'] = {
+        'name' : 'Icons',
+        'sprint' : [...list]
+      };
+      list = <Map<String,String>>[];
+    }
+
+    if(currVersion.isNotEmpty) {
+      sprintsVersions['generation-viii'] = {...currVersion};
+      currVersion = {};
+    }
+
+    print('JELO');
+    return Map<String, dynamic>.from(sprintsVersions);
   }
 }
 class Stat {

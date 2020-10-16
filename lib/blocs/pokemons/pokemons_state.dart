@@ -9,10 +9,10 @@ abstract class PokemonsState extends Equatable {
   List<Object> get props => [];
 }
 
-class PokemonInitial extends PokemonsState {}
+class PokemonsInitial extends PokemonsState {}
 
 class LoadInProgress extends PokemonsState {}
-class LoadInDetailProgress extends PokemonsState {}
+class DetailLoadInProgress extends PokemonsState {}
 
 class ListLoadSuccess extends PokemonsState {
   final List<Resource> pokemons;
@@ -34,3 +34,4 @@ class DetailLoadSuccess  extends PokemonsState{
 }
 
 class LoadFailure extends PokemonsState {}
+class DetailLoadFailure extends PokemonsState {}

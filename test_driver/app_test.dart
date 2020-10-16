@@ -12,7 +12,7 @@ void main() {
     });
     tearDownAll(() async {
       if (driver != null) {
-        driver.close();
+        await driver?.close();
       }
     });
 

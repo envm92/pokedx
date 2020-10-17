@@ -7,45 +7,63 @@ import 'package:pokedx/models/pokemon.dart';
 
 class DetailsScreen extends StatelessWidget {
 
+  Widget _buildSprint(Map<String, String> item) {
+    if (item != null) {
+      return Expanded(
+          child: CachedNetworkImage(
+            fit: BoxFit.fitHeight,
+            placeholder: (context, url) {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+            imageUrl: item['url'],
+          ));
+    }
+    return Container();
+  }
+
+  List<Widget>_buildCardSprite(String category, List<Map<String, String>> listCategory) {
+    var list = <Widget>[];
+    if(listCategory.isNotEmpty) {
+      list.add(ListTile(title: Text(category),));
+      list.add(Card(
+        child: Container(
+          width: double.infinity,
+          height: 100.0,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Row(
+            children: listCategory.map((e) => _buildSprint(e)).toList(),
+          ),
+        ),
+      ));
+    }
+    return list;
+  }
+
   Widget _buildSprites(Pokemon pokemon) {
     var sprites = pokemon.sprites;
-    var spriteList = [
-      ...sprites.getOther(),
-      ...sprites.getDefault(),
-      ...sprites.getFemale(),
-      ...sprites.getShiny(),
-      ...sprites.getShinyFemale()
-    ];
+    var list = <Widget>[];
+    list.addAll(_buildCardSprite('Default',sprites.getDefault()));
+    list.addAll(_buildCardSprite('Female',sprites.getFemale()));
+    list.addAll(_buildCardSprite('Shiny',sprites.getShiny()));
+    list.addAll(_buildCardSprite('Shiny female',sprites.getShinyFemale()));
+
     sprites.getVersion().forEach((key, value) {
       value.forEach((k,v) {
-        spriteList = [...spriteList, ...v['sprint']];
+        list.addAll(_buildCardSprite(v['name'],v['sprint']));
       });
     });
-    return Container(
-        padding: const EdgeInsets.only(bottom: 10),
-        color: Colors.blueGrey.shade50,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: spriteList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  Expanded(
-                    child: CachedNetworkImage(
-                      placeholder: (context, url) {
-                        return Container(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                      imageUrl: spriteList[index]['url'],
-                    ),
-                  ),
-                  Text(spriteList[index]['name'])
-                ],
-              );
-            }));
+    return ListView.builder(
+        key: PageStorageKey('sprints'),
+        itemCount: list.length,
+        itemBuilder: (BuildContext context, int index) {
+          return list[index];
+        });
   }
 
   DataTable _buildGeneralDataTable(Pokemon pokemon) {
@@ -108,88 +126,104 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildList(Pokemon pokemon) {
-      var _details = [];
-      _details.add(ListTile(title: Text('General info')));
-      _details.add(_buildGeneralDataTable(pokemon));
-      _details.add(Divider());
-      _details.add(ListTile(title: Text('Abilities')));
-      var abilities = <Widget>[];
-      pokemon.abilities.forEach((v) {
-        abilities.add(Chip(label: Text(v.ability.name)));
-      });
-      _details.add(Padding(
-        padding: const EdgeInsets.all(10),
-        child: Wrap(
-          spacing: 6.0,
-          runSpacing: 6.0,
-          children: abilities,
-        ),
-      ));
-      _details.add(Divider());
-      _details.add(ListTile(title: Text('Forms')));
-      var forms = <Widget>[];
-      pokemon.forms.forEach((v) {
-        forms.add(Chip(label: Text(v.name)));
-      });
-      _details.add(Padding(
-        padding: const EdgeInsets.all(10),
-        child: Wrap(
-          spacing: 6.0,
-          runSpacing: 6.0,
-          children: forms,
-        ),
-      ));
-      _details.add(Divider());
-      _details.add(ListTile(title: Text('Moves')));
-      var moves = <Widget>[];
-      pokemon.moves.forEach((v) {
-        moves.add(Chip(label: Text(v.move.name)));
-      });
-      _details.add(Padding(
+  Widget _buildAbilities(Pokemon pokemon){
+    var abilities = <Widget>[];
+    pokemon.abilities.forEach((v) {
+      abilities.add(Chip(label: Text(v.ability.name)));
+    });
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Wrap(
+        spacing: 6.0,
+        runSpacing: 6.0,
+        children: abilities,
+      ),
+    );
+
+  }
+
+  Widget _buildForms(Pokemon pokemon) {
+    var forms = <Widget>[];
+    pokemon.forms.forEach((v) {
+      forms.add(Chip(label: Text(v.name)));
+    });
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Wrap(
+        spacing: 6.0,
+        runSpacing: 6.0,
+        children: forms,
+      ),
+    );
+  }
+
+  Widget _buildMoves(Pokemon pokemon) {
+    var moves = <Widget>[];
+    pokemon.moves.forEach((v) {
+      moves.add(Chip(label: Text(v.move.name)));
+    });
+    return SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(10),
         child: Wrap(
           spacing: 6.0,
           runSpacing: 6.0,
           children: moves,
         ),
-      ));
-      _details.add(Divider());
-      _details.add(ListTile(title: Text('Stats')));
-      _details.add(_buildStatsDataTable(pokemon));
-      _details.add(Divider());
-      _details.add(ListTile(title: Text('Type')));
-      var type = <Widget>[];
-      pokemon.types.forEach((v) {
-        type.add(Chip(label: Text(v.type.name)));
-      });
-      _details.add(Padding(
-        padding: const EdgeInsets.all(10),
-        child: Wrap(
-          spacing: 6.0,
-          runSpacing: 6.0,
-          children: type,
-        ),
-      ));
-      return _details.cast<Widget>();
+      ),
+    );
   }
 
-  Widget _buildDetail(Pokemon pokemon) {
-    return Scaffold(
+  Widget _buildType(Pokemon pokemon) {
+    var type = <Widget>[];
+    pokemon.types.forEach((v) {
+      type.add(Chip(label: Text(v.type.name)));
+    });
+   return Padding(
+     padding: const EdgeInsets.all(10),
+     child: Wrap(
+       spacing: 6.0,
+       runSpacing: 6.0,
+       children: type,
+     ),
+   );
+  }
+
+  Widget _buildDetail(BuildContext context,Pokemon pokemon) {
+    return DefaultTabController(length: 7,child: Scaffold(
       appBar: AppBar(
         title: Text('# ${pokemon.id} ${pokemon.name.toUpperCase()}'),
       ),
       body: Container(
+        height: double.maxFinite,
         child: Column(
           children: <Widget>[
             Expanded(
-              child:_buildSprites(pokemon)
+              child: CachedNetworkImage(
+                fit: BoxFit.fitHeight,
+                placeholder: (context, url) {
+                  return Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+                imageUrl:
+                'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png',
+              ),
             ),
             Expanded(
               child: Container(
-                child: ListView(
-                  padding: const EdgeInsets.all(5),
-                  children: _buildList(pokemon),
+                child: TabBarView(
+                  children: [
+                    _buildGeneralDataTable(pokemon),
+                    _buildSprites(pokemon),
+                    _buildAbilities(pokemon),
+                    _buildForms(pokemon),
+                    _buildMoves(pokemon),
+                    _buildStatsDataTable(pokemon),
+                    _buildType(pokemon),
+                  ],
                 ),
               ),
               flex: 2,
@@ -197,6 +231,24 @@ class DetailsScreen extends StatelessWidget {
           ],
         ),
       ),
+
+      bottomNavigationBar: Container(
+        height: 40.0,
+        child: TabBar(
+          labelColor: Theme.of(context).accentColor,
+          isScrollable: true,
+          tabs: [
+            Text('General'),
+            Text('Sprints'),
+            Text('Abilities'),
+            Text('Forms'),
+            Text('Moves'),
+            Text('Stats'),
+            Text('Type'),
+          ],
+        ),
+      )
+      )
     );
   }
 
@@ -212,7 +264,7 @@ class DetailsScreen extends StatelessWidget {
       cubit: BlocProvider.of<PokemonBloc>(context),
       builder: (BuildContext context, PokemonState state ){
         if (state is LoadSuccess) {
-          return _buildDetail(state.pokemon);
+          return _buildDetail(context, state.pokemon);
         }
 
         if (state is LoadFailure) {

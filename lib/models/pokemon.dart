@@ -775,8 +775,6 @@ class Sprite {
       sprintsVersions['generation-viii'] = {...currVersion};
       currVersion = {};
     }
-
-    print('JELO');
     return Map<String, dynamic>.from(sprintsVersions);
   }
 }
